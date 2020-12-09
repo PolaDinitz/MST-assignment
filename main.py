@@ -2,7 +2,7 @@ def minimum_spanning_tree():
     return None
 
 
-def update_mininum_spanning_tree():
+def update_minimum_spanning_tree():
     return None
 
 
