@@ -56,10 +56,56 @@ def prim_mst(graph, weight_func):
                     heapq.heappush(edges, (weight_func(to, to_next), to, to_next))
     return mst
 
+def BFS_SP(graph, start, goal): 
+    explored = [] 
+    queue = [[start]] 
 
-def update_mst():
+    if start == goal: 
+        print("Same Node") 
+        return None
+      
+    while queue: 
+        path = queue.pop(0) 
+        node = path[-1] 
+          
+        if node not in explored: 
+            neighbours = graph[node] 
+            for neighbour in neighbours: 
+                new_path = list(path) 
+                new_path.append(neighbour) 
+                queue.append(new_path) 
+                  
+                if neighbour == goal: 
+                    return new_path
+            explored.append(node) 
+  
     return None
 
+def update_mst(graph,edge):
+    path = BFS_SP(graph,edge[0],edge[1])
+    edge_remove = None
+    for e in range(len(path[:-1])):
+        if(generate_weight(path[e],path[e+1]) > edge[2]):
+            edge_remove = (path[e],path[e+1])
+            break
+    if(edge_remove == None):
+        return graph
+    elif(type(edge_remove) == tuple):
+        new_neighbors = set()
+        for n in graph.get(edge_remove[0]):
+            if not(n == edge_remove[1]):
+                new_neighbors.add(n)
+        new_neighbors.add(edge[1])
+        graph.update({edge_remove[0]:new_neighbors})
+        new_neighbors = set()
+        for n in graph.get(edge_remove[1]):
+            if not(n == edge_remove[0]):
+                new_neighbors.add(n)
+        graph.update({edge_remove[1]:new_neighbors})
+        a = graph.get(edge[1])
+        a.add(edge[0])
+        graph.update({edge[1]:a})
+        return graph
 
 def print_mst(mst_tree):
     for k, v in mst_tree.items():
@@ -73,6 +119,7 @@ def main():
     # todo: use later in "prod"
     some_graph = generate_graph(20, 50)
     mst = prim_mst(example_graph, generate_weight)
+    print(mst)
     print_mst(mst)
     pass
 
