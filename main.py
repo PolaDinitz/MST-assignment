@@ -15,8 +15,8 @@ example_graph = {
 
 
 # todo: change the graph name you want to use
-def generate_weight(frm, to):
-    return example_graph[frm][to]
+def generate_weight(graph,frm, to):
+    return graph[frm][to]
 
 
 # create clique graph
@@ -41,7 +41,7 @@ def prim_mst(graph, weight_func):
 
     visited = {starting_vertex}
     edges = [
-        (weight_func(starting_vertex, to), starting_vertex, to)
+        (weight_func(graph,starting_vertex, to), starting_vertex, to)
         for to in graph[starting_vertex]
     ]
     heapq.heapify(edges)
@@ -53,7 +53,7 @@ def prim_mst(graph, weight_func):
             mst[frm].add(to)
             for to_next, weight in graph[to].items():
                 if to_next not in visited:
-                    heapq.heappush(edges, (weight_func(to, to_next), to, to_next))
+                    heapq.heappush(edges, (weight_func(graph,to, to_next), to, to_next))
     return make_undirected_graph(mst)
 
 
@@ -100,7 +100,7 @@ def update_mst(graph,edge):
 
     edge_remove = None
     for e in range(len(path[:-1])):
-        if(generate_weight(path[e],path[e+1]) > edge[2]):
+        if(generate_weight(graph,path[e],path[e+1]) > edge[2]):
             edge_remove = (path[e],path[e+1])
             break
     if(edge_remove == None):
@@ -132,8 +132,8 @@ def print_mst(mst_tree):
 
 def main():
     # todo: use later in "prod"
-    #some_graph = generate_graph(20, 50)
-    mst = prim_mst(example_graph, generate_weight)
+    some_graph = generate_graph(20, 50)
+    mst = prim_mst(some_graph, generate_weight)
     print_mst(mst)
     mst = update_mst(mst,('A','G', 1))
     print("second")
