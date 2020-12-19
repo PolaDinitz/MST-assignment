@@ -95,6 +95,9 @@ def BFS_SP(graph, start, goal):
 
 def update_mst(graph,edge):
     path = BFS_SP(graph,edge[0],edge[1])
+    if(path is None):
+        return graph
+
     edge_remove = None
     for e in range(len(path[:-1])):
         if(generate_weight(path[e],path[e+1]) > edge[2]):
@@ -129,9 +132,11 @@ def print_mst(mst_tree):
 
 def main():
     # todo: use later in "prod"
-    # some_graph = generate_graph(20, 50)
+    #some_graph = generate_graph(20, 50)
     mst = prim_mst(example_graph, generate_weight)
-    print(mst)
+    print_mst(mst)
+    mst = update_mst(mst,('A','G', 1))
+    print("second")
     print_mst(mst)
     pass
 
