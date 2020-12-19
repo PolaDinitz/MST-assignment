@@ -54,7 +54,19 @@ def prim_mst(graph, weight_func):
             for to_next, weight in graph[to].items():
                 if to_next not in visited:
                     heapq.heappush(edges, (weight_func(to, to_next), to, to_next))
-    return mst
+    return make_undirected_graph(mst)
+
+
+def make_undirected_graph(g):
+    new = g.copy()
+
+    for v, edges in g.items():
+        for edge in edges:
+            if edge not in new:
+                new[edge] = set()
+            new[edge].add(v)
+
+    return new
 
 
 def update_mst():
@@ -71,7 +83,7 @@ def print_mst(mst_tree):
 
 def main():
     # todo: use later in "prod"
-    some_graph = generate_graph(20, 50)
+    # some_graph = generate_graph(20, 50)
     mst = prim_mst(example_graph, generate_weight)
     print_mst(mst)
     pass
